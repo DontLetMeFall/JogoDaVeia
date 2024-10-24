@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novo Documento</title>
+    <style>
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .menu {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            width: 200px;
+            padding: 20px;
+        }
+        .caixa {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .caixa div {
+            display: flex;
+        }
+        .caixa div div {
+            height: 200px;
+            width: 200px;
+            margin: 10px;
+            background-color: lightgray;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 90px;
+            cursor: pointer;
+            font-family: Arial, Helvetica, sans-serif;
+            border-radius: 5px;
+        }
+        .caixa div div:hover {
+            background-color: green;
+            height: 205px;
+            width: 205px;
+        }
+        label{
+            font-family: 'Courier New', Courier, monospace;
+        }
+        button{
+            width: 200px;
+            height: 100px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        var jogo = 2;
+        var marcados = [];
+        var LugaresMarcadosPeloJogadorO = "";
+        var LugaresMarcadosPeloJogadorX = "";
+        function iniciar() {
+            resetGame();
+            document.getElementById("comecar").disabled = true;
+        }
+        function clicked(espaco) {
+            if (marcados.includes(espaco.id)) { return;}
+            if (jogo === 2) {
+                LugaresMarcadosPeloJogadorO += espaco.id;
+                document.getElementById(espaco.id).innerHTML = "O";
+                jogo = 1;
+            } else {
+                LugaresMarcadosPeloJogadorX += espaco.id;
+                document.getElementById(espaco.id).innerHTML = "X";
+                jogo = 2;
+            }
+            checkVictory();
+        }
+
+        function checkVictory() {
+            var ListaDaVitoria = ["123", "456", "789", "159", "357", "147", "258", "369"];
+            if (ListaDaVitoria.some(v => LugaresMarcadosPeloJogadorO.includes(v))) {
+                alert("Jogador 2 Venceu");
+                resetGame();
+                return;
+            }
+            if (ListaDaVitoria.some(v => LugaresMarcadosPeloJogadorX.includes(v))) {
+                alert("Jogador 1 Venceu");
+                resetGame();
+                return;
+            }
+            if (marcados.length === 8) {
+                alert("Jogo empatado");
+                resetGame();
+            }
+        }
+        function resetGame() {
+            jogo = 1;
+            var cells = document.querySelectorAll(".caixa div div");
+            cells.forEach(cell => {
+                cell.innerHTML = "";
+            });
+            marcados = [];
+            LugaresMarcadosPeloJogadorO = "";
+            LugaresMarcadosPeloJogadorX = "";
+            document.getElementById("comecar").disabled = false;
+        }
+    </script>
+    <div class="container">
+        <div class="menu">
+            <button id="comecar" onclick="iniciar()"><h1>INICIAR</h1></button>
+        </div>
+        <div class="caixa">
+            <div>
+                <div id="1" onclick="clicked(this)"></div>
+                <div id="2" onclick="clicked(this)"></div>
+                <div id="3" onclick="clicked(this)"></div>
+            </div>
+            <div>
+                <div id="4" onclick="clicked(this)"></div>
+                <div id="5" onclick="clicked(this)"></div>
+                <div id="6" onclick="clicked(this)"></div>
+            </div>
+            <div>
+                <div id="7" onclick="clicked(this)"></div>
+                <div id="8" onclick="clicked(this)"></div>
+                <div id="9" onclick="clicked(this)"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
